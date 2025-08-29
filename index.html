@@ -16,7 +16,75 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-
+              <section>
+  <div style="display: flex; flex-direction: column; height: 100%;">
+      <!-- First row: Heading -->
+      <div style="flex: 0 0 auto; margin-bottom: 1em;">
+          <h2>{{ $json.data[0].title }}</h2>
+      </div>
+      <!-- Second row: Two columns -->
+      <div style="flex: 1 1 auto; display: flex; gap: 2em;">
+          <!-- First column: Image -->
+          <div style="flex: 1 1 0; display: flex; align-items: center; justify-content: center;">
+              <img src="https://fastly.picsum.photos/id/0/5000/3333.jpg?hmac=_j6ghY5fCfSD6tvtcV74zXivkJSPIfR9B8w34XeQmvU"
+                  alt="Sample Image" style="max-width: 100%; max-height: 300px; border-radius: 8px;">
+          </div>
+          <!-- Second column: Text -->
+          <div style="flex: 1 1 0; display: flex; align-items: center;">
+              <p style="font-size: 1.2em;">
+                  {{ $json.data[0].text[0].children[0].text }}
+              </p>
+          </div>
+      </div>
+  </div>
+</section>
+              <section>
+    <div style="display: flex; flex-direction: column; height: 100%;">
+        <!-- First row: Heading -->
+        <div style="flex: 0 0 auto; margin-bottom: 1em;">
+            <h2>{{ $json.data[0].title }}</h2>
+        </div>
+        <!-- Second row: Three columns with images and captions -->
+        <div style="flex: 1 1 auto; display: flex; gap: 2em; justify-content: center;">
+            <!-- Column 1 -->
+            <div style="flex: 1 1 0; display: flex; flex-direction: column; align-items: center;">
+                <div style="position: relative; width: 100%; display: flex; justify-content: center;">
+                    <img src="https://fastly.picsum.photos/id/0/5000/3333.jpg?hmac=_j6ghY5fCfSD6tvtcV74zXivkJSPIfR9B8w34XeQmvU"
+                        alt="Mountain Lake"
+                        style="max-width: 100%; max-height: 200px; border-radius: 8px; display: block;">
+                    <div
+                        style="position: absolute; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); color: #fff; font-size: 1em; text-align: center; border-radius: 0 0 8px 8px; padding: 0.3em 0;">
+                        {{ $input.item.json.data[0].posts[0].caption }}
+                    </div>
+                </div>
+            </div>
+            <!-- Column 2 -->
+            <div style="flex: 1 1 0; display: flex; flex-direction: column; align-items: center;">
+                <div style="position: relative; width: 100%; display: flex; justify-content: center;">
+                    <img src="https://fastly.picsum.photos/id/0/5000/3333.jpg?hmac=_j6ghY5fCfSD6tvtcV74zXivkJSPIfR9B8w34XeQmvU"
+                        alt="Cute Dog"
+                        style="max-width: 100%; max-height: 200px; border-radius: 8px; display: block;">
+                    <div
+                        style="position: absolute; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); color: #fff; font-size: 1em; text-align: center; border-radius: 0 0 8px 8px; padding: 0.3em 0;">
+                        {{ $input.item.json.data[0].posts[1].caption }}
+                    </div>
+                </div>
+            </div>
+            <!-- Column 3 -->
+            <div style="flex: 1 1 0; display: flex; flex-direction: column; align-items: center;">
+                <div style="position: relative; width: 100%; display: flex; justify-content: center;">
+                    <img src="https://fastly.picsum.photos/id/0/5000/3333.jpg?hmac=_j6ghY5fCfSD6tvtcV74zXivkJSPIfR9B8w34XeQmvU"
+                        alt="Forest Path"
+                        style="max-width: 100%; max-height: 200px; border-radius: 8px; display: block;">
+                    <div
+                        style="position: absolute; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); color: #fff; font-size: 1em; text-align: center; border-radius: 0 0 8px 8px; padding: 0.3em 0;">
+                        {{ $input.item.json.data[0].posts[2].caption }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 			<div>		
 		</div>
 
@@ -24,122 +92,7 @@
 		<script src="plugin/notes/notes.js"></script>
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			const ws = new WebSocket("ws://ae47a4b71db2.ngrok-free.app");
-
-			const slidesData = [
-				{
-					type: "two-column",
-					heading: "Welcome to My Slide",
-					image: {
-					src: "https://fastly.picsum.photos/id/0/5000/3333.jpg?hmac=_j6ghY5fCfSD6tvtcV74zXivkJSPIfR9B8w34XeQmvU",
-					alt: "Sample Image"
-					},
-					text: "This is some sample text describing the image or providing additional information. You can customize this text to fit your presentation needs."
-				},
-				{
-					type: "gallery",
-					heading: "Gallery of Images",
-					images: [
-					{ src: "https://fastly.picsum.photos/id/0/5000/3333.jpg?hmac=_j6ghY5fCfSD6tvtcV74zXivkJSPIfR9B8w34XeQmvU", alt: "Mountain Lake", caption: "Mountain Lake" },
-					{ src: "https://fastly.picsum.photos/id/0/5000/3333.jpg?hmac=_j6ghY5fCfSD6tvtcV74zXivkJSPIfR9B8w34XeQmvU", alt: "Cute Dog", caption: "Cute Dog" },
-					{ src: "https://fastly.picsum.photos/id/0/5000/3333.jpg?hmac=_j6ghY5fCfSD6tvtcV74zXivkJSPIfR9B8w34XeQmvU", alt: "Forest Path", caption: "Forest Path" }
-					]
-				}
-			];
-
-			ws.onmessage = (event) => {
-				const data = JSON.parse(event.data);
-				console.log("New slides received:", data);
-
-				const slidesContainer = document.querySelector(".slides");
-				slidesContainer.innerHTML = ""; // clear old slides
-
-				debugger;
-				// data.forEach(idea => {
-				// 	idea.slides.forEach(slide => {
-				// 		const section = document.createElement("section");						
-				// 		section.innerHTML = `<h2>${slide.title}</h2>`;
-				// 		slidesContainer.appendChild(section);
-				// 	})					
-				// });
-				createSlides(slidesData)
-				Reveal.sync();
-			};								
-
-			function createSlides(slides) {
-				const container = document.querySelector(".slides");
-
-				slides.forEach(slide => {
-					const section = document.createElement("section");
-					const sectionDiv = document.createElement("div");
-					sectionDiv.style.display = "flex";
-					sectionDiv.style.flexDirection = "column";
-					sectionDiv.style.height = "100%";
-					// section.style.display = "flex";
-					// section.style.flexDirection = "column";
-					// section.style.height = "100%";
-
-					// Heading row
-					const headingDiv = document.createElement("div");
-					headingDiv.style.flex = "0 0 auto";
-					headingDiv.style.marginBottom = "1em";
-					headingDiv.innerHTML = `<h2>${slide.heading}</h2>`;
-					sectionDiv.appendChild(headingDiv);
-					// section.appendChild(headingDiv);
-
-					// Slide content
-					const contentDiv = document.createElement("div");
-					contentDiv.style.flex = "1 1 auto";
-					contentDiv.style.display = "flex";
-					contentDiv.style.gap = "2em";
-					contentDiv.style.justifyContent = "center";
-
-					if (slide.type === "two-column") {
-						// Image column
-						const imgDiv = document.createElement("div");
-						imgDiv.style.flex = "1 1 0";
-						imgDiv.style.display = "flex";
-						imgDiv.style.alignItems = "center";
-						imgDiv.style.justifyContent = "center";
-						imgDiv.innerHTML = `<img src="${slide.image.src}" alt="${slide.image.alt}" style="max-width: 100%; max-height: 300px; border-radius: 8px;">`;
-
-						// Text column
-						const textDiv = document.createElement("div");
-						textDiv.style.flex = "1 1 0";
-						textDiv.style.display = "flex";
-						textDiv.style.alignItems = "center";
-						textDiv.innerHTML = `<p style="font-size: 1.2em;">${slide.text}</p>`;
-
-						contentDiv.appendChild(imgDiv);
-						contentDiv.appendChild(textDiv);
-
-					} else if (slide.type === "gallery") {
-						slide.images.forEach(img => {
-							const col = document.createElement("div");
-							col.style.flex = "1 1 0";
-							col.style.display = "flex";
-							col.style.flexDirection = "column";
-							col.style.alignItems = "center";
-
-							col.innerHTML = `
-							<div style="position: relative; width: 100%; display: flex; justify-content: center;">
-								<img src="${img.src}" alt="${img.alt}" style="max-width: 100%; max-height: 200px; border-radius: 8px; display: block;">
-								<div style="position: absolute; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); color: #fff; font-size: 1em; text-align: center; border-radius: 0 0 8px 8px; padding: 0.3em 0;">
-								${img.caption}
-								</div>
-							</div>
-							`;
-							contentDiv.appendChild(col);
-						});
-					}
-
-				sectionDiv.appendChild(contentDiv);
-				section.appendChild(sectionDiv);
-				// section.appendChild(contentDiv);
-				container.appendChild(section);
-			});
-			}
+		<script>			
 			// More info about initialization & config:
 			// - https://revealjs.com/initialization/
 			// - https://revealjs.com/config/
