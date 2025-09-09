@@ -58,7 +58,7 @@ function createSlidesData(){
                     // if(slide.image != null){
                     //     const res = await fetch(`${proxy_base_url}/api/files/${slide.image}`);
                     //     const imgData = await res.json();
-                    //     return {
+                    //     return {REVEAL_URL
                     //         type: "two-column",
                     //         heading: slide.title,
                     //         image: {
@@ -194,6 +194,8 @@ function createSlides(slides) {
         contentDiv.style.display = "flex";
         contentDiv.style.gap = "2em";
         contentDiv.style.justifyContent = "center";
+        contentDiv.style.flexWrap = "wrap";
+        contentDiv.style.width = "100%";
 
         if (slide.type === "two-column") {
             // Image column
@@ -202,14 +204,14 @@ function createSlides(slides) {
             imgDiv.style.display = "flex";
             imgDiv.style.alignItems = "center";
             imgDiv.style.justifyContent = "center";
-            imgDiv.innerHTML = `<img src="${slide.image.src}" alt="${slide.image.alt}" style="max-width: 100%; max-height: 300px; border-radius: 8px;">`;
+            imgDiv.innerHTML = `<img src="${slide.image.src}" alt="${slide.image.alt}" style="max-width: 100%; border-radius: 8px;">`;
 
             // Text column
             const textDiv = document.createElement("div");
-            textDiv.style.flex = "1 1 0";
+            textDiv.style.flex = "1 1 20%";
             textDiv.style.display = "flex";
             textDiv.style.alignItems = "center";
-            textDiv.innerHTML = `<p style="font-size: 1.2em;">${slide.text}</p>`;
+            textDiv.innerHTML = `<p style="font-size: 1.2vw;">${slide.text}</p>`;
 
             contentDiv.appendChild(imgDiv);
             contentDiv.appendChild(textDiv);
@@ -217,16 +219,19 @@ function createSlides(slides) {
         } else if (slide.type === "gallery") {
             slide.images.forEach(img => {
                 const col = document.createElement("div");
-                col.style.flex = "1 1 0";
+                const colWidth = "calc((100% - 4em) / 3)";
+                col.style.flex = `0 0 ${colWidth}`;
+                col.style.maxWidth = colWidth;
                 col.style.display = "flex";
                 col.style.flexDirection = "column";
                 col.style.alignItems = "center";
+                col.style.boxSizing = "border-box";
 
                 col.innerHTML = `
-							<div style="position: relative; width: 100%; display: flex; justify-content: center;">
-								<img src="${img.src}" alt="${img.alt}" style="max-width: 100%; max-height: 200px; border-radius: 8px; display: block;">
-								<div style="position: absolute; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); color: #fff; font-size: 1em; text-align: center; border-radius: 0 0 8px 8px; padding: 0.3em 0;">
-								${img.caption}
+							<div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
+								<img src="${img.src}" alt="${img.alt}" style="max-width: 100%; border-radius: 8px; display: block;">
+								<div style="margin-top: 0.4em; font-size: 1.5vw; text-align: center;">
+									${img.caption}
 								</div>
 							</div>
 							`;

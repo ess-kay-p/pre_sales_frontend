@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 4000;
 
 // Allow CORS (frontend running on port 8000)
 app.use(cors({
-    origin: "http://localhost:8000"   // or "*" if you want to allow all origins
+    origin: `${process.env.STRAPI_URL}`   // or "*" if you want to allow all origins
   }));
 
 // 🔹 Proxy for slides by pitch_id
@@ -55,6 +55,15 @@ app.get("/api/files/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to fetch file from Strapi" });
   }
 });
+
+app.get("/baseurl", async () => {
+    try {
+      return `${process.env.REVEAL_URL}`;      
+    } catch (err) {
+      console.error("Proxy error /baseurl:", err);
+      res.status(500).json({ error: "Failed to url from env" });
+    }
+  });
 
 app.listen(PORT, () => {
   console.log(`✅ Proxy server running at http://localhost:${PORT}`);
