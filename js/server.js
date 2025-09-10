@@ -6,10 +6,11 @@ import cors from "cors";
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 4000;
+const HOST = process.env.HOST || "http://0.0.0.0";
 
 // Allow CORS (frontend running on port 8000)
 app.use(cors({
-    origin: `${process.env.STRAPI_URL}`   // or "*" if you want to allow all origins
+    origin: `${process.env.REVEAL_URL}`   // or "*" if you want to allow all origins
   }));
 
 // 🔹 Proxy for slides by pitch_id
@@ -56,15 +57,27 @@ app.get("/api/files/:id", async (req, res) => {
   }
 });
 
-app.get("/baseurl", async () => {
-    try {
-      return `${process.env.REVEAL_URL}`;      
-    } catch (err) {
-      console.error("Proxy error /baseurl:", err);
-      res.status(500).json({ error: "Failed to url from env" });
-    }
-  });
+app.get("/api/brand-colors", async (req, res) => {
+  try {
+    const pitch_id = req.query.pitch_id;
+
+    const strapiRes = await fetch(
+      `${process.env.STRAPI_URL}/api/brand-colors?populate=*&filters[brand][pitch_id][$eq]=${pitch_id}`,
+      {
+        headers: {
+          "Authorization": `Bearer ${process.env.STRAPI_TOKEN}`
+        }
+      }
+    );
+
+    const data = await strapiRes.json();
+    res.json(data);
+  } catch (err) {
+    console.error("Proxy error /api/brand-colors:", err);
+    res.status(500).json({ error: "Failed to fetch brand-colors from Strapi" });
+  }
+});
 
 app.listen(PORT, () => {
-  console.log(`✅ Proxy server running at http://localhost:${PORT}`);
+  console.log(`✅ Proxy server running at ${HOST}:${PORT}`);
 });

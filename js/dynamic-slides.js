@@ -104,7 +104,10 @@ function createSlidesData(){
             slidesData.push(...group.slides);
         });        
 
-        createSlides(slidesData);
+        const gradient = await getBrandColors();
+        console.log(gradient)
+
+        createSlides(slidesData, gradient);
         // Force layout and ensure we start at the first slide
         Reveal.sync();
         Reveal.layout();
@@ -163,8 +166,36 @@ function groupSlidesByIdea(builtSlides, rawSlides) {
     return orderedGroups;
 }
 
+function getBrandColors(){
+	return fetch(`${proxy_base_url}/api/brand-colors?pitch_id=${pitch_id}`)
+		.then(response => response.json())
+		.then(async data => {
+			const colors = data.data;
+			if (!Array.isArray(colors) || colors.length === 0) return;
 
-function createSlides(slides) {
+			const numStops = colors.length;
+			const step = numStops > 1 ? 100 / (numStops - 1) : 100;
+			const stops = colors.map((c, i) => {
+				const hex = c.hex || c.color || c.value || '#000000';
+				const pct = Math.round(i * step);
+				return `${hex} ${pct}%`;
+			}).join(', ');
+
+			return `radial-gradient(circle at center, ${stops})`;            
+
+			// const revealEl = document.querySelector('.reveal');
+			// if (revealEl) {
+			// 	revealEl.style.background = gradient;
+			// } else {
+			// 	document.body.style.background = gradient;
+			// }
+		})
+		.catch(error => {
+			console.error('Error fetching brand colors:', error);
+		});
+}
+
+function createSlides(slides, gradient) {
     const container = document.querySelector(".slides");
     const outer_section = document.createElement("section");
 
@@ -205,6 +236,13 @@ function createSlides(slides) {
             imgDiv.style.alignItems = "center";
             imgDiv.style.justifyContent = "center";
             imgDiv.innerHTML = `<img src="${slide.image.src}" alt="${slide.image.alt}" style="max-width: 100%; border-radius: 8px;">`;
+            // Apply gradient border to the image column if provided
+            if (gradient) {
+                imgDiv.style.border = "4px solid transparent";
+                imgDiv.style.borderImage = `${gradient} 1`;
+                imgDiv.style.borderImageSlice = 1;
+                imgDiv.style.borderRadius = "8px";
+            }
 
             // Text column
             const textDiv = document.createElement("div");
@@ -226,6 +264,13 @@ function createSlides(slides) {
                 col.style.flexDirection = "column";
                 col.style.alignItems = "center";
                 col.style.boxSizing = "border-box";
+                // Apply gradient border to the column that contains image and caption if provided
+                if (gradient) {
+                    col.style.border = "4px solid transparent";
+                    col.style.borderImage = `${gradient} 1`;
+                    col.style.borderImageSlice = 1;
+                    col.style.borderRadius = "8px";
+                }
 
                 col.innerHTML = `
 							<div style="width: 100%; display: flex; flex-direction: column; align-items: center;">
